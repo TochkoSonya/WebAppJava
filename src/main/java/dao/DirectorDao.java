@@ -1,11 +1,12 @@
-package Dao;
+package dao;
 
-import Model.*;
-import Utils.HibernateSessionFactoryUtil;
+import model.*;
+import utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import org.hibernate.query.Query;
+
 import java.util.List;
 
 
@@ -38,9 +39,9 @@ public class DirectorDao implements Dao<Director> {
         session.close();
     }
 
-    public List<Director> getAllDirectors(){
+    public List<Director> getAllDirectors() {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        List<Director> directors=session.createQuery("From Director").list();
+        List<Director> directors = session.createQuery("From Director").list();
         session.close();
         return directors;
     }
@@ -48,21 +49,19 @@ public class DirectorDao implements Dao<Director> {
     public Director get(int id) {
         return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(Director.class, id);
     }
+
     public List<Director> getDirectorByName(String firstName, String lastName) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Query query=session.createQuery("from Director where firstName=:first and lastName=:last");
-         query.setParameter("first",firstName);
-        query.setParameter("last",lastName);
-        List<Director> directors=query.list();
-        if(directors.size()>0)
-        {
+        Query query = session.createQuery("from Director where firstName=:first and lastName=:last");
+        query.setParameter("first", firstName);
+        query.setParameter("last", lastName);
+        List<Director> directors = query.list();
+        if (directors.size() > 0) {
             session.close();
             return directors;
-        }
-        else {
+        } else {
             session.close();
             return null;
         }
     }
-
 }

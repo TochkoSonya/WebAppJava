@@ -1,16 +1,16 @@
-package Services;
+package services;
 
-import Dao.MovieDao;
-import Model.*;
-import java.sql.SQLException;
+import dao.MovieDao;
+import model.*;
+
 import java.util.List;
 
 public class MovieService implements Service<Movie> {
 
-    private MovieDao movieDao;
+    private final MovieDao movieDao;
 
-    public MovieService(){
-        movieDao=new MovieDao();
+    public MovieService() {
+        movieDao = new MovieDao();
     }
 
     public void insert(Movie movie) {

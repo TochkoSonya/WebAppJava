@@ -1,8 +1,8 @@
-package Controller;
+package controller;
 
-import Model.*;
-import Services.DirectorService;
-import Services.MovieService;
+import model.*;
+import services.DirectorService;
+import services.MovieService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,10 +20,9 @@ public class ControllerServlet extends HttpServlet {
     private MovieService movieService;
     private DirectorService directorService;
 
-    public void init()
-    {
-        movieService=new MovieService();
-        directorService=new DirectorService();
+    public void init() {
+        movieService = new MovieService();
+        directorService = new DirectorService();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -65,9 +64,9 @@ public class ControllerServlet extends HttpServlet {
     private void listMovie(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         List<Movie> listMovie = movieService.listAllObjects();
-        List<Director> listDirector=directorService.getAllDirectors();
+        List<Director> listDirector = directorService.getAllDirectors();
 
-        request.setAttribute("listDirector",listDirector);
+        request.setAttribute("listDirector", listDirector);
         request.setAttribute("listMovie", listMovie);
         RequestDispatcher dispatcher = request.getRequestDispatcher("MoviePage.jsp");
         dispatcher.forward(request, response);
@@ -86,24 +85,23 @@ public class ControllerServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("MovieForm.jsp");
         request.setAttribute("movie", existingMovie);
         dispatcher.forward(request, response);
-
     }
+
     private void insertMovie(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
         String title = request.getParameter("title");
         int year = Integer.parseInt(request.getParameter("year"));
-        String firstName=request.getParameter("firstName");
-        String lastName=request.getParameter("lastName");
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
 
-        Director director=new Director(firstName,lastName);
+        Director director = new Director(firstName, lastName);
         Movie newMovie = new Movie(title, year);
-        List<Director> dir=directorService.getDirectorByName(firstName,lastName);
+        List<Director> dir = directorService.getDirectorByName(firstName, lastName);
 
-        if(dir!=null){
+        if (dir != null) {
             newMovie.setDirector(dir.get(0));
             movieService.insert(newMovie);
-        }
-        else if (dir==null){
+        } else if (dir == null) {
             newMovie.setDirector(director);
             movieService.insert(newMovie);
         }
@@ -114,13 +112,13 @@ public class ControllerServlet extends HttpServlet {
             throws SQLException, IOException {
         String title = request.getParameter("title");
         int year = Integer.parseInt(request.getParameter("year"));
-        String firstName=request.getParameter("firstName");
-        String lastName=request.getParameter("lastName");
-        int id=Integer.parseInt(request.getParameter("id"));
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        int id = Integer.parseInt(request.getParameter("id"));
 
-       Movie movie=movieService.get(id);
-       movie.setTitle(title);
-       movie.setYear(year);
+        Movie movie = movieService.get(id);
+        movie.setTitle(title);
+        movie.setYear(year);
         movie.getDirector().setLastName(lastName);
         movie.getDirector().setFirstName(firstName);
         movieService.update(movie);

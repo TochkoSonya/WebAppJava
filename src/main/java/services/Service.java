@@ -1,8 +1,12 @@
-package Dao;
+package services;
 
-public interface Dao<T> {
+public interface Service<T> {
+
     void insert(T t);
+
     void delete(T t);
+
     void update(T t);
+
     T get(int id);
 }
